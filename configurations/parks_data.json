@@ -1,0 +1,28 @@
+{
+  "parks": [
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "314159"
+          },
+          "name": {
+            "S": "314159 Park"
+          },
+          "description": {
+            "S": "A Pi Park"
+          },
+          "location": {
+            "S": "San Francisco"
+          },
+          "rating": {
+            "N": "5"
+          },
+          "reviewList": {
+            "S": "[]"
+          }
+        }
+      }
+    }
+  ]
+}
