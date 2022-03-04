@@ -1,5 +1,7 @@
 package com.barkpark.models;
 
+import java.util.Objects;
+
 /**
  * Represents a park as defined by the BarkPark API
  */
@@ -58,6 +60,30 @@ public class ParkModel {
         this.rating = rating;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ParkModel parkModel = (ParkModel) o;
+        return getId().equals(parkModel.getId()) && getName().equals(parkModel.getName()) && Objects.equals(getDescription(), parkModel.getDescription()) && getLocation().equals(parkModel.getLocation()) && Objects.equals(getRating(), parkModel.getRating());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getDescription(), getLocation(), getRating());
+    }
+
+    @Override
+    public String toString() {
+        return "ParkModel{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", location='" + location + '\'' +
+                ", rating=" + rating +
+                '}';
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -93,7 +119,6 @@ public class ParkModel {
             this.rating = rating;
             return this;
         }
-
 
         public ParkModel build() {
             return new ParkModel(this);

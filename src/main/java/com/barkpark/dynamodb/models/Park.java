@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 import com.barkpark.converters.ReviewLinkedListConverter;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a record in the parks table
@@ -74,5 +75,30 @@ public class Park {
 
     public void setReviewList(List<Review> reviewList) {
         this.reviewList = reviewList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Park park = (Park) o;
+        return getId().equals(park.getId()) && getName().equals(park.getName()) && Objects.equals(getDescription(), park.getDescription()) && getLocation().equals(park.getLocation()) && Objects.equals(getRating(), park.getRating()) && Objects.equals(getReviewList(), park.getReviewList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getDescription(), getLocation(), getRating(), getReviewList());
+    }
+
+    @Override
+    public String toString() {
+        return "Park{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", location='" + location + '\'' +
+                ", rating=" + rating +
+                ", reviewList=" + reviewList +
+                '}';
     }
 }

@@ -19,6 +19,7 @@ public class ParkDao {
     }
 
     public List<Park> getParks() {
+
         final Map<String, String> expressionAttributeNames = new HashMap<>();
         expressionAttributeNames.put("#projectedName", "name");
         expressionAttributeNames.put("#projectedID", "id");
@@ -28,8 +29,7 @@ public class ParkDao {
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
                 .withExpressionAttributeNames(expressionAttributeNames)
-                .withProjectionExpression("#projectedName, #projectedID, #projectedDescription, #projectedLocation, #projectedRating")
-                .withLimit(20);
+                .withProjectionExpression("#projectedName, #projectedID, #projectedDescription, #projectedLocation, #projectedRating");
 
         List<Park> parkList = dynamoDbMapper.scan(Park.class, scanExpression);
 
