@@ -24,8 +24,8 @@ public class ModelConverter {
     }
 
     /**
-     * Converts a provided {@link List < Park >} into a {@link List<ParkModel>} representation.
-     * @param parkList the list parks to be converted
+     * Converts a provided {@link List<Park>} into a {@link List<ParkModel>} representation.
+     * @param parkList the list of parks to be converted
      * @return the converted parkModelList
      */
     public static List<ParkModel> toParkModelList(List<Park> parkList) {

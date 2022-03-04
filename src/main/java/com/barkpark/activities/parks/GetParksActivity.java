@@ -34,14 +34,14 @@ public class GetParksActivity implements RequestHandler<GetParksRequest, GetPark
         this.parkDao = parkDao;
     }
 
+    // TODO: Should this method and the provider throw exceptions in the method signature?
     @Override
     public GetParksResult handleRequest(GetParksRequest request, Context context) {
         logger.info("Received GetParksRequest {}", request);
 
         List<Park> parkList = parkDao.getParks();
 
-        // Can I just project to the model directly?
-         List<ParkModel> parkModelList = ModelConverter.toParkModelList(parkList);
+        List<ParkModel> parkModelList = ModelConverter.toParkModelList(parkList);
 
         return GetParksResult.builder()
                 .withParkList(parkModelList)
