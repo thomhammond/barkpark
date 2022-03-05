@@ -45,7 +45,7 @@ public class ParkTestHelper {
         assertEquals(
                 parkList.size(),
                 parkModelList.size(),
-                String.format("Expected parkList (%s) and parkModelList (%s) to be the same length",
+                String.format("Expected parkList (%s) and parkModelList (%s) to be the same size",
                         parkList, parkModelList)
         );
 
