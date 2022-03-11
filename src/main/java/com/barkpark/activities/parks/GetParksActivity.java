@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.barkpark.converters.ModelConverter;
 import com.barkpark.dynamodb.ParkDao;
 import com.barkpark.dynamodb.models.Park;
+import com.barkpark.exceptions.NoParksFoundException;
 import com.barkpark.models.ParkModel;
 import com.barkpark.models.requests.parks.GetParksRequest;
 import com.barkpark.models.results.parks.GetParksResult;
@@ -36,7 +37,7 @@ public class GetParksActivity implements RequestHandler<GetParksRequest, GetPark
 
     // TODO: Should this method and the provider throw exceptions in the method signature?
     @Override
-    public GetParksResult handleRequest(GetParksRequest request, Context context) {
+    public GetParksResult handleRequest(GetParksRequest request, Context context) throws NoParksFoundException {
         logger.info("Received GetParksRequest {}", request);
 
         List<Park> parkList = parkDao.getParks();
