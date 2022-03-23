@@ -7,7 +7,7 @@
   "paths": {
     "/parks": {
       "get": {
-        "summary": "Retrieves parks (limited to 20)",
+        "summary": "Retrieves all parks",
         "responses": {
           "200": {
             "description": "Successful Operation",

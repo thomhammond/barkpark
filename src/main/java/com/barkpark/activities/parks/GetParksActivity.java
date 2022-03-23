@@ -35,12 +35,14 @@ public class GetParksActivity implements RequestHandler<GetParksRequest, GetPark
         this.parkDao = parkDao;
     }
 
-    // TODO: Should this method and the provider throw exceptions in the method signature?
     @Override
-    public GetParksResult handleRequest(GetParksRequest request, Context context) throws NoParksFoundException {
+    public GetParksResult handleRequest(GetParksRequest request, Context context) {
         logger.info("Received GetParksRequest {}", request);
 
-        List<Park> parkList = parkDao.getParks();
+        String exclusiveStartKey = request.getExclusiveStartKey();
+
+        List<Park> parkList = parkDao.getParks(exclusiveStartKey);
+        logger.info("ParkList {}", parkList);
 
         List<ParkModel> parkModelList = ModelConverter.toParkModelList(parkList);
 

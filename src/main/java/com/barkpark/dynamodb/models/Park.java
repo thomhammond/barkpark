@@ -15,6 +15,8 @@ import java.util.Objects;
 @DynamoDBTable(tableName = "parks")
 public class Park {
 
+    //TODO: Make HashKey = name & RangeKey = location, update classes accordingly
+    //TODO: Add geometry instance variable to hold lat/long
     private String id;
     private String name;
     private String description;

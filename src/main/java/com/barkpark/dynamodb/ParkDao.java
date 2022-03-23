@@ -4,6 +4,8 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.ScanResultPage;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.barkpark.dynamodb.models.Park;
 import com.barkpark.exceptions.NoParksFoundException;
 
@@ -35,21 +37,28 @@ public class ParkDao {
      *
      * @return a paginated list of stored Parks.
      */
-    public List<Park> getParks() throws NoParksFoundException {
+    public List<Park> getParks(String exclusiveStartKey) throws NoParksFoundException {
 
+        // Name and Location are Reserved Words in DynamoDB, we must project them for the Lambda function to work correctly
         final Map<String, String> expressionAttributeNames = new HashMap<>();
         expressionAttributeNames.put("#projectedName", "name");
-        expressionAttributeNames.put("#projectedID", "id");
-        expressionAttributeNames.put("#projectedDescription", "description");
         expressionAttributeNames.put("#projectedLocation", "location");
-        expressionAttributeNames.put("#projectedRating", "rating");
 
+        Map<String, AttributeValue> exclusiveStartKeyMap = null;
+        if(exclusiveStartKey != null) {
+            exclusiveStartKeyMap = new HashMap<>();
+            exclusiveStartKeyMap.put("id", new AttributeValue().withS(exclusiveStartKey));
+        }
+
+        //TODO: set withLimit and handle subsequent calls with LastEvaluatedKey and withExclusiveStartKey
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
                 .withExpressionAttributeNames(expressionAttributeNames)
-                .withProjectionExpression("#projectedName, #projectedID, #projectedDescription, #projectedLocation, #projectedRating");
+                .withExclusiveStartKey(exclusiveStartKeyMap)
+                .withLimit(1)
+                .withProjectionExpression("#projectedName, id, description, #projectedLocation, rating");
 
-        //TODO: Need to consider AWS exception handling...
-        List<Park> parkList = dynamoDbMapper.scan(Park.class, scanExpression);
+        ScanResultPage<Park> parkScanResults = dynamoDbMapper.scanPage(Park.class, scanExpression);
+        List<Park> parkList = parkScanResults.getResults();
 
         if (parkList == null || parkList.isEmpty()) {
             throw new NoParksFoundException("No parks found in the database");
